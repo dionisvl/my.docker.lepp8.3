@@ -2,3 +2,4 @@
 .env
 app/.env
 app
+app/
