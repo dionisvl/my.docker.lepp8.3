@@ -23,3 +23,13 @@ bash:
 	docker compose exec php-fpm /bin/bash
 sh:
 	docker compose exec php-fpm /bin/sh
+
+migration:
+	docker compose exec php-fpm php bin/console make:migration
+
+migrate:
+	docker compose exec php-fpm php bin/console doctrine:migrations:migrate
+
+cache-clear:
+	docker compose exec php-fpm composer dump-autoload && \
+	docker compose exec php-fpm php bin/console cache:clear

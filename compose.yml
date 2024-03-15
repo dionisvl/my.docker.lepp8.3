@@ -37,6 +37,7 @@ services:
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
+      AKISMET_KEY: ${AKISMET_KEY}
     depends_on:
       - db
 
