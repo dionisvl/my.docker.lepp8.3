@@ -33,3 +33,10 @@ migrate:
 cache-clear:
 	docker compose exec php-fpm composer dump-autoload && \
 	docker compose exec php-fpm php bin/console cache:clear
+
+tests:
+	docker compose exec php-fpm symfony console doctrine:database:drop --force --env=test || true
+	docker compose exec php-fpm symfony console doctrine:database:create --env=test
+	docker compose exec php-fpm symfony console doctrine:migrations:migrate -n --env=test
+	docker compose exec php-fpm symfony console doctrine:fixtures:load -n --env=test
+	docker compose exec php-fpm symfony php bin/phpunit $(MAKECMDGOALS)
