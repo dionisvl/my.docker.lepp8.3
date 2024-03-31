@@ -48,6 +48,12 @@ RUN docker-php-ext-enable opcache
 RUN pecl install redis amqp \
     && docker-php-ext-enable redis amqp
 
+RUN apt-get update && apt-get install -y graphviz
+
+# Install and enable APCu
+RUN pecl install apcu \
+    && docker-php-ext-enable apcu
+
 # Set the working directory for PHP
 WORKDIR /app
 
