@@ -40,3 +40,6 @@ tests:
 	docker compose exec php-fpm symfony console doctrine:migrations:migrate -n --env=test
 	docker compose exec php-fpm symfony console doctrine:fixtures:load -n --env=test
 	docker compose exec php-fpm symfony php bin/phpunit $(MAKECMDGOALS)
+
+queue-watch:
+	docker compose exec php-fpm symfony console messenger:consume async -vv

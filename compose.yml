@@ -38,6 +38,8 @@ services:
       MAIL_ENCRYPTION: ${MAIL_ENCRYPTION}
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS}
       AKISMET_KEY: ${AKISMET_KEY}
+      SLACK_DSN: ${SLACK_DSN}
+      ADMIN_EMAIL: ${ADMIN_EMAIL}
     depends_on:
       - db
 
