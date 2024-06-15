@@ -1,4 +1,3 @@
-version: '3'
 services:
   nginx:
     build:
@@ -10,7 +9,9 @@ services:
       - ./.docker/nginx/myTemplates:/etc/nginx/myTemplates
       # Copy all additional sites to Nginx container
       - ./.docker/nginx/sites:/etc/nginx/sites-enabled
-      # For access to static sites directly(by nginx config)
+      # Main site (for nginx config)
+      - ${PROJECT_DIR_IN_HOST}/:${PROJECT_DIR_IN_DOCKER}
+      # Another sites for future (for nginx config)
       - /var/www:/var/www:rw
     environment:
       - APP_ENV=${APP_ENV:-dev}
@@ -19,11 +20,13 @@ services:
 
   php-fpm:
     build:
-      dockerfile: .docker/php-fpm/Dockerfile
+      dockerfile: .docker/php-fpm-alpine/Dockerfile
     volumes:
+      - ${PROJECT_DIR_IN_HOST}/:${PROJECT_DIR_IN_DOCKER}
+      # Another sites for future (for nginx config)
       - /var/www:/var/www:rw
-      - ./app:/app
     environment:
+      PHP_IDE_CONFIG: "serverName=myLepp"
       APP_ENV: ${APP_ENV}
       APP_URL: ${APP_URL}
       APP_SECRET: ${APP_SECRET}

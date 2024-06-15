@@ -36,3 +36,22 @@ DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}?
 - optional: `make migrate`
 
 
+### Setting Up PhpStorm for PHPUnit and Xdebug
+
+- Settings - PHP - CLI Interpreter
+    - Click on `...` - Add new (+) - From Docker-compose
+        - Pay attention to the Config field where you need to specify the docker-compose.yml file,
+        - and you must take it exactly from Your project
+        - In the Service field, choose php-fpm - OK
+      - Lifecycle - Connect to existing container
+      - OK
+  - Now it is very important to add project directory mapping:
+      - With the PHP window open
+      - Find the `Path mappings` field
+      - Click on the folder icon
+      - A window `Edit project path mappings` will appear
+      - In this window, click on `+` and add a line:
+          - Local Path = `//wsl.localhost/Ubuntu-24.04/var/www/my.s7test/app`
+          - Remote Path = `/app`
+          - OK
+  - OK

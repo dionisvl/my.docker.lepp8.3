@@ -1,7 +1,7 @@
 server {
     listen 80;
     server_tokens off;
-    root /var/www/mylepp.local/app/public;
+    root /app/public;
     index index.php;
 
     location / {

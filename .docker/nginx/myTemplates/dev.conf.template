@@ -2,7 +2,7 @@ server {
     listen 80;
     server_name mylepp.local;
     server_tokens off;
-    root /var/www/my.docker.lepp8.3/app/public;
+    root /app/public;
     index index.php;
 
     location / {
