@@ -9,6 +9,7 @@
 127.0.0.1 site.local
 127.0.0.1 nginxtest.loc
 ```
+
 - `git clone THIS_REPO ./`
 
 ### Symfony example

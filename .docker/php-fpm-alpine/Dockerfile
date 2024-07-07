@@ -1,14 +1,36 @@
 FROM php:8.3-fpm-alpine
 
-# Set environment variable
 ENV LC_ALL=C.UTF-8
 
-# Install necessary packages
+# Install system packages
 RUN apk add --no-cache \
+    bash \
+    bash-completion \
     supervisor \
     nginx \
     curl \
     icu-data-full \
+    graphviz \
+    zip \
+    libpng-dev \
+    libxml2-dev \
+    freetype-dev \
+    libjpeg-turbo-dev \
+    oniguruma-dev \
+    linux-headers \
+    zlib-dev \
+    libzip-dev \
+    procps \
+    htop \
+    nano \
+    icu-dev \
+    postgresql-dev \
+    libwebp-dev \
+    nodejs \
+    npm
+
+# Install PHP extensions
+RUN apk add --no-cache \
     php83 \
     php83-fpm \
     php83-phar \
@@ -28,33 +50,35 @@ RUN apk add --no-cache \
     php83-tokenizer \
     php83-pecl-memcached \
     php83-intl \
-    php83-iconv
+    php83-iconv \
+    php83-exif \
+    php83-gd \
+    php83-curl \
+    php83-pgsql
 
-# Create and configure user and group
-#RUN addgroup -S app-data && \
-#    adduser -D app-data -G app-data && \
-#    addgroup nginx app-data && \
-#    mkdir -p /var/www/app && \
-#    chown app-data.app-data /var/www/app
+# Install and configure PHP extensions using docker-php-ext-install
+RUN docker-php-ext-install \
+    bcmath \
+    exif \
+    gd \
+    mysqli \
+    pdo_mysql \
+    mbstring \
+    xml \
+    zip \
+    intl \
+    pdo_pgsql \
+    pgsql \
+    calendar
 
+# Configure GD with WebP, JPEG, and FreeType support
+RUN docker-php-ext-configure gd \
+    --with-webp \
+    --with-jpeg \
+    --with-freetype \
+    && docker-php-ext-install gd
 
-
-# Install graphviz
-RUN apk add --no-cache graphviz
-
-# Install and enable APCu
-#RUN pecl install apcu \
-#    && docker-php-ext-enable apcu
-
-# Ensure the directory for additional ini files is available
-# Xdebug also here
-COPY ./.docker/php-fpm-alpine/conf.d /usr/local/etc/php/conf.d
-
-# Install symfony-cli
-RUN curl -1sLf 'https://dl.cloudsmith.io/public/symfony/stable/setup.alpine.sh' | sh
-
-RUN apk add --update linux-headers
-# Install Xdebug
+# Install and enable Xdebug
 RUN apk add --no-cache $PHPIZE_DEPS \
     && pecl install xdebug \
     && docker-php-ext-enable xdebug
@@ -62,10 +86,12 @@ RUN apk add --no-cache $PHPIZE_DEPS \
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Copy additional PHP configuration
+COPY ./.docker/php-fpm-alpine/conf.d /usr/local/etc/php/conf.d
 
-# Set the working directory for PHP
+# Set working directory
 WORKDIR /app
 
-# Expose port 9000 and start php-fpm server
+# Expose port and start PHP-FPM
 EXPOSE 9000
 CMD ["php-fpm"]

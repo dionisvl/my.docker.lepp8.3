@@ -47,15 +47,27 @@ services:
       - db
 
   db:
-    image: postgres:16.2-bookworm
+    image: mysql:8.0
     environment:
-      POSTGRES_DB: ${DB_NAME}
-      POSTGRES_USER: ${DB_USER}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db_lepp:/var/lib/postgresql/data
+      - db_lepp_mysql:/var/lib/mysql
     ports:
-      - "5432:5432"
+      - "33066:3306"
+
+#  db:
+#    image: postgres:16.2-bookworm
+#    environment:
+#      POSTGRES_DB: ${DB_NAME}
+#      POSTGRES_USER: ${DB_USER}
+#      POSTGRES_PASSWORD: ${DB_PASSWORD}
+#    volumes:
+#      - db_lepp:/var/lib/postgresql/data
+#    ports:
+#      - "5432:5432"
 
   ###> symfony/mailer ###
   mailer:
@@ -70,3 +82,4 @@ services:
 
 volumes:
   db_lepp:
+  db_lepp_mysql:
