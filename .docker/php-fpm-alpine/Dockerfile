@@ -86,6 +86,18 @@ RUN apk add --no-cache $PHPIZE_DEPS \
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
+# Install PHP extensions
+RUN apk add --no-cache \
+    php83-opcache \
+    php83-fileinfo
+
+# Enable PHP extensions
+RUN docker-php-ext-enable \
+    opcache
+
+RUN pecl install apcu \
+  && docker-php-ext-enable apcu
+
 # Copy additional PHP configuration
 COPY ./.docker/php-fpm-alpine/conf.d /usr/local/etc/php/conf.d
 

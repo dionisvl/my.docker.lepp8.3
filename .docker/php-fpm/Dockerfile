@@ -41,7 +41,7 @@ RUN apt-get update && apt-get install -y \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Install PHP extensions
-RUN docker-php-ext-install pdo_pgsql exif pcntl intl zip xml xsl pdo_pgsql mbstring
+RUN docker-php-ext-install pdo_pgsql exif pcntl intl zip xml xsl pdo_pgsql mbstring fileinfo
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 RUN docker-php-ext-install gd
 RUN docker-php-ext-enable opcache
@@ -56,9 +56,6 @@ RUN pecl install apcu \
 
 # Set the working directory for PHP
 WORKDIR /app
-
-RUN git config --global user.email "userName@example.com"
-RUN git config --global user.name "userName"
 
 # Expose port 9000 and start php-fpm server
 EXPOSE 9000

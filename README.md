@@ -20,6 +20,8 @@
 APP_ENV=${APP_ENV}
 APP_SECRET=${APP_SECRET}
 DATABASE_URL="postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:5432/${DB_NAME}?serverVersion=16&charset=utf8"
+or
+DATABASE_URL="mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:3306/${DB_NAME}?serverVersion=8&charset=utf8"
 ```
 
 
