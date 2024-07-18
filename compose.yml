@@ -4,6 +4,7 @@ services:
       dockerfile: .docker/nginx/Dockerfile
     ports:
       - "80:80"
+      - "443:443"
       - "777:777"# test nginx
     volumes:
       - ./.docker/nginx/myTemplates:/etc/nginx/myTemplates
@@ -13,6 +14,7 @@ services:
       - ${PROJECT_DIR_IN_HOST}/:${PROJECT_DIR_IN_DOCKER}
       # Another sites for future (for nginx config)
       - /var/www:/var/www:rw
+      - ./.docker/nginx/letsencrypt:/etc/letsencrypt
     environment:
       - APP_ENV=${APP_ENV:-dev}
       # Заменяет переменные окружения в шаблоне конфигурации Nginx, сохраняет результат в новый файл

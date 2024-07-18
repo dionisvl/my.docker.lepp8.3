@@ -58,3 +58,9 @@ DATABASE_URL="mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:3306/${DB_NAME}?serve
           - Remote Path = `/app`
           - OK
   - OK
+
+
+#### SSL (HTTPS)
+- sudo apt-get install nginx python3-certbot-nginx
+- sudo certbot --nginx -d app.phpqa.ru
+- `sudo cp -r /etc/letsencrypt /var/www/my.docker.lepp8.3/.docker/nginx/letsencrypt`
