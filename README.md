@@ -3,6 +3,7 @@
 ## How to Install
 
 - Install Docker and Compose plugin https://docs.docker.com/engine/install/
+- `docker network create traefik`
 - `mkdir /var/www/my.site` and `cd /var/www/my.site`
 - add to your hosts file:
 ```

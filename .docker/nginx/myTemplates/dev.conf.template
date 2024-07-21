@@ -1,7 +1,8 @@
 server {
     listen 80;
-    server_name mylepp.local;
-    server_tokens off;
+    listen [::]:80;
+    server_name ${DOMAIN};
+
     root /app/public;
     index index.php;
 
