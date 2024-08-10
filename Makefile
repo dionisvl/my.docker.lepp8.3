@@ -4,9 +4,14 @@ up: docker-up
 down: docker-down
 build:
 	docker compose up --build -d
-build-r:
-	make down
-	make build
+
+restart:
+	make up
+	docker compose restart
+
+rebuild:
+	docker compose up -d --build --force-recreate
+
 docker-up:
 	docker compose up -d
 
