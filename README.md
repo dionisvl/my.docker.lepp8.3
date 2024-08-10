@@ -15,7 +15,12 @@
 
 ### Symfony example
 - `make bash`
+- `symfony new . --version="7.1.*" --webapp`
+or
 - `symfony new . --version=7.1 --php=8.3 --webapp`
+or
+- `composer create-project symfony/symfony-demo app`
+
 - fix .env file in symfony to this:
 ```
 APP_ENV=${APP_ENV}

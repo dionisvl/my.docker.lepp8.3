@@ -7,24 +7,27 @@ services:
       - "--api.insecure=true"
       - "--providers.docker=true"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.web777.address=:777"
       - "--entrypoints.websecure.address=:443"
-      - "--entrypoints.websecure.http.tls=true"
-      - "--entrypoints.websecure.http3"
-      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=true"
+      - "--entrypoints.websecure.http.tls=$${APP_ENV==prod}"
+      - "--entrypoints.websecure.http3=$${APP_ENV==prod}"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge=$${APP_ENV==prod}"
       - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
-      - "--certificatesresolvers.letsencrypt.acme.email=${LETSENCRYPT_EMAIL}"
+      - "--certificatesresolvers.letsencrypt.acme.email=$${LETSENCRYPT_EMAIL}"
       - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
     ports:
       - "80:80"
       - "443:443"
       - "443:443/udp"
       - "8080:8080"
+      - "777:777"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
       - "./letsencrypt:/letsencrypt"
     environment:
       - DOMAIN=${DOMAIN}
       - LETSENCRYPT_EMAIL=${LETSENCRYPT_EMAIL}
+      - APP_ENV=${APP_ENV}
     networks:
       - private
       - traefik
@@ -35,11 +38,19 @@ services:
       dockerfile: .docker/nginx/Dockerfile
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.nginx.rule=Host(`${DOMAIN}`)"
-      - "traefik.http.routers.nginx.entrypoints=websecure"
-      - "traefik.http.routers.nginx.tls=true"
-      - "traefik.http.routers.nginx.tls.certresolver=letsencrypt"
-      - "traefik.http.services.nginx.loadbalancer.server.port=80"
+      # config 1 (port 80)
+      - "traefik.http.routers.nginx-80.rule=Host(`${DOMAIN}`) || Host(`localhost`)"
+      - "traefik.http.routers.nginx-80.entrypoints=web"
+#      - "traefik.http.routers.nginx-80.entrypoints=websecure"
+#      - "traefik.http.routers.nginx-80.tls=true"
+#      - "traefik.http.routers.nginx-80.tls.certresolver=letsencrypt"
+      - "traefik.http.services.nginx-80.loadbalancer.server.port=80"
+      - "traefik.http.routers.nginx-80.service=nginx-80"
+      # config 2 (port 777)
+      - "traefik.http.routers.nginx-777.rule=Host(`nginxtest.loc`) || Host(`localhost`)"
+      - "traefik.http.routers.nginx-777.entrypoints=web777"
+      - "traefik.http.services.nginx-777.loadbalancer.server.port=777"
+      - "traefik.http.routers.nginx-777.service=nginx-777"
     volumes:
       - ./.docker/nginx/myTemplates:/etc/nginx/myTemplates
       # Copy all additional sites to Nginx container
