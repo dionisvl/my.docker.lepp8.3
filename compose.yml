@@ -99,31 +99,34 @@ services:
       - private
       - traefik
 
+#  db:
+#    image: mysql:5.7
+#    environment:
+#      MYSQL_DATABASE: ${DB_NAME}
+#      MYSQL_USER: ${DB_USER}
+#      MYSQL_PASSWORD: ${DB_PASSWORD}
+#      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+#    volumes:
+#      - db_lepp_mysql:/var/lib/mysql
+#    ports:
+#      - "33066:3306"
+#    networks:
+#      - private
+#      - traefik
+
   db:
-    image: mysql:5.7
+    image: postgres:16.2-bookworm
     environment:
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
-      - db_lepp_mysql:/var/lib/mysql
+      - db_lepp:/var/lib/postgresql/data
     ports:
-      - "33066:3306"
+      - "54322:5432"
     networks:
       - private
       - traefik
-
-#  db:
-#    image: postgres:16.2-bookworm
-#    environment:
-#      POSTGRES_DB: ${DB_NAME}
-#      POSTGRES_USER: ${DB_USER}
-#      POSTGRES_PASSWORD: ${DB_PASSWORD}
-#    volumes:
-#      - db_lepp:/var/lib/postgresql/data
-#    ports:
-#      - "5432:5432"
 
   ###> symfony/mailer ###
   mailer:
