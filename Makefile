@@ -30,10 +30,10 @@ sh:
 	docker compose exec php-fpm /bin/sh
 
 migration:
-	docker compose exec php-fpm php bin/console make:migration
+	docker compose exec php-fpm php bin/console make:migration --no-interaction
 
 migrate:
-	docker compose exec php-fpm php bin/console doctrine:migrations:migrate
+	docker compose exec php-fpm php bin/console doctrine:migrations:migrate --no-interaction
 
 cache-clear:
 	docker compose exec php-fpm composer dump-autoload && \
